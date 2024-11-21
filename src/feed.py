@@ -21,14 +21,28 @@ def load_users():
         print("Error: No se encontró el archivo users.csv.")
     return users
 
-def open_feed(user_id):
+def open_feed(user_id,user_name):
     # Crear la ventana del feed
     feed_window = tk.Tk()
     feed_window.title("Feed")
 
     # Título en la ventana del feed
-    label_feed = tk.Label(feed_window, text="Bienvenido al Feed de Usuario", font=("Arial", 16))
+    label_feed = tk.Label(feed_window, text=f"Bienvenido a tu Feed {user_name}", font=("Arial", 16))
     label_feed.pack(pady=20)
+
+    # Frame para los botones de navegación
+    nav_frame = tk.Frame(feed_window)
+    nav_frame.pack(fill="x", pady=10)
+
+    # Botones de navegación
+    notifications_button = tk.Button(nav_frame, text="Notificaciones", width=15)
+    notifications_button.pack(side="left", padx=5)
+
+    profile_button = tk.Button(nav_frame, text="Perfil", width=15)
+    profile_button.pack(side="left", padx=5)
+
+    friend_requests_button = tk.Button(nav_frame, text="Solicitudes de Amistad", width=20)
+    friend_requests_button.pack(side="left", padx=5)
 
     # Frame para contener el feed
     feed_frame = tk.Frame(feed_window)
@@ -78,8 +92,9 @@ def open_feed(user_id):
         message_label = tk.Label(post_frame, text=message, font=("Arial", 12), wraplength=500, justify="center")
         message_label.pack(pady=5)
 
-    # Botón para cerrar sesión
+    # Botón para cerrar sesión (opcional)
     logout_button = tk.Button(feed_window, text="Cerrar sesión", command=feed_window.quit)
     logout_button.pack(pady=10)
 
+    # Asegúrate de que el feed_window siga abierto hasta que el usuario cierre la ventana
     feed_window.mainloop()

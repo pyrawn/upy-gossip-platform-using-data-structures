@@ -35,7 +35,7 @@ def validate_login():
     if username in users and users[username]["password"] == password:
         user_id = users[username]["user_id"]  # Get the user_id of the logged-in user
         messagebox.showinfo("Login Successful", "Welcome to the system!")
-        open_feed(user_id)  # Pass user_id to open_feed() when the login is successful
+        open_feed(user_id,username)  # Pass user_id to open_feed() when the login is successful
         root.destroy()  # Close the login window
     else:
         messagebox.showerror("Login Error", "Invalid username or password.")
