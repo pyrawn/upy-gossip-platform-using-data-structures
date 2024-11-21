@@ -1,5 +1,12 @@
 import os
 import importlib.util
+import sys
+
+# Establece el directorio base del proyecto como parte del PYTHONPATH
+project_base = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, project_base)
+
+from src.feed import open_feed  # Ajusta los imports después de configurar el PYTHONPATH
 
 # Cambiar el directorio base al nivel del proyecto
 project_base = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))

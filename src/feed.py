@@ -1,7 +1,10 @@
 import tkinter as tk
 import csv
 import os
-from src.stack import Stack
+try:
+    from src.stack import Stack  # Cuando se ejecuta desde la raíz del proyecto
+except ModuleNotFoundError:
+    from .stack import Stack  # Cuando se ejecuta dentro de la carpeta `src`
 
 def load_users():
     """Carga los usuarios desde users.csv y los devuelve como un diccionario."""

@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import csv
 import os
-from feed import open_feed  # Ensure feed.py is properly referenced
+from src.feed import open_feed
 
 # Function to read users from the CSV file
 def read_users():
