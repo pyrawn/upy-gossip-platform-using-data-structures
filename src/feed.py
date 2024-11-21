@@ -1,7 +1,7 @@
 import tkinter as tk
 import csv
 import os
-from stack import Stack  # Asegúrate de tener la clase Stack en un archivo llamado stack.py
+from src.stack import Stack
 
 def load_users():
     """Carga los usuarios desde users.csv y los devuelve como un diccionario."""
