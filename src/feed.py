@@ -21,7 +21,7 @@ def load_users():
         print("Error: No se encontró el archivo users.csv.")
     return users
 
-def open_feed():
+def open_feed(user_id):
     # Crear la ventana del feed
     feed_window = tk.Tk()
     feed_window.title("Feed")

@@ -17,12 +17,13 @@ def read_users():
             next(reader)  # Skip the header
             for row in reader:
                 user_id, username, password = row  # Adjusted for updated columns
-                users[username] = password
+                users[username] = {"user_id": user_id, "password": password}
     except FileNotFoundError:
         messagebox.showerror("Error", "The users file was not found.")
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred while reading the file: {e}")
     return users
+
 
 # Function to validate login
 def validate_login():
@@ -31,12 +32,14 @@ def validate_login():
 
     users = read_users()
 
-    if username in users and users[username] == password:
+    if username in users and users[username]["password"] == password:
+        user_id = users[username]["user_id"]  # Get the user_id of the logged-in user
         messagebox.showinfo("Login Successful", "Welcome to the system!")
-        open_feed()  # Open the feed if the login is successful
+        open_feed(user_id)  # Pass user_id to open_feed() when the login is successful
         root.destroy()  # Close the login window
     else:
         messagebox.showerror("Login Error", "Invalid username or password.")
+
 
 # Function to open the sign-up window
 def open_signin():
