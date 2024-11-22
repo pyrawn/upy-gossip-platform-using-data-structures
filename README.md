@@ -10,3 +10,6 @@ This is a mini social network created for a data structures' project, the techno
 2. Ejecutarlo desde uno de los tests o desde la carpeta main.py
 
 **NO** los habran desde los archivos feed, login o stack, no funcionarán porque manejan rutas relativas.
+
+Al momento de descargar upy-gossip-platform...zip cambiar el nombre de ese repositorio local a "project" con letra minúscula.
+Favor de colocarse en la carpeta "project", su terminal debería verse mas o menos así: `C:\Users\Usuario\Phyton VSC\project>` 
