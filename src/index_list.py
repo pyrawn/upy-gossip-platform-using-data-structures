@@ -9,55 +9,60 @@ Metodos:
     - Aleatorio
 
 '''
-import csv
-import random
+class Index_List:
+    def _init_(self, users_file, relations_file):
+        self.users_file = users_file
+        self.relations_file = relations_file
+        self.users = []  # List to hold user data
+        self.relations = []  # List to hold relations
+        self.load_users()
+        self.load_relations()
 
-def read_csv(file_path):
-    """Reads user data from a CSV file and returns a list of tuples."""
-    users = []
-    with open(file_path, mode='r') as file:
-        reader = csv.reader(file)
-        next(reader) 
-        for row in reader:
-            users.append((int(row[0]), row[1], row[2]))  
-    return users
+    def load_users(self):
+        """Load users from the users CSV file."""
+        try:
+            with open(self.users_file, mode='r', newline='', encoding='utf-8') as file:
+                reader = csv.DictReader(file)
+                self.users = [
+                    {"id": int(row["id"]), "username": row["username"], "description": row["description"]}
+                    for row in reader
+                ]
+        except FileNotFoundError:
+            print(f"Error: File {self.users_file} not found.")
+        except Exception as e:
+            print(f"Error loading users: {e}")
 
-def sort_alphabetically(data):
-    """Sorts the list of tuples alphabetically by username."""
-    return sorted(data, key=lambda x: x[1])
+    def load_relations(self):
+        """Load relations from the relations CSV file."""
+        try:
+            with open(self.relations_file, mode='r', newline='', encoding='utf-8') as file:
+                reader = csv.DictReader(file)
+                self.relations = [{"user_id": int(row["user_id"]), "friend_id": int(row["friend_id"])} for row in reader]
+        except FileNotFoundError:
+            print(f"Error: File {self.relations_file} not found.")
+        except Exception as e:
+            print(f"Error loading relations: {e}")
 
-def sort_reverse_alphabetically(data):
-    """Sorts the list of tuples in reverse alphabetical order by username."""
-    return sorted(data, key=lambda x: x[1], reverse=True)
+    def get_all_users(self):
+        """Return all user data."""
+        return self.users
 
-def shuffle_randomly(data):
-    """Shuffles the list of tuples randomly."""
-    data_copy = data[:] 
-    random.shuffle(data_copy)
-    return data_copy
+    def get_sorted_users(self):
+        """Return users sorted alphabetically by username."""
+        return sorted(self.users, key=lambda user: user["username"])
 
-def write_csv(file_path, data):
-    """Writes the modified data back to a CSV file."""
-    with open(file_path, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(['id', 'username', 'password']) 
-        writer.writerows(data)
+    def get_random_users(self):
+        """Return users in a random order."""
+        shuffled_users = self.users[:]
+        random.shuffle(shuffled_users)
+        return shuffled_users
 
-if __name__ == "__main__":
-    input_file = "assets/data/users.csv"  
-    output_file = "assets/data/sorted_users.csv"  
+    def get_user_friends(self, user_id):
+        """Return a list of friends for the given user ID."""
+        friend_ids = [relation["friend_id"] for relation in self.relations if relation["user_id"] == user_id]
+        return [user for user in self.users if user["id"] in friend_ids]
 
-    users = read_csv(input_file)
-    print("Original data:", users)
-
-    sorted_users = sort_alphabetically(users)
-    print("Alphabetically sorted:", sorted_users)
-
-    reverse_sorted_users = sort_reverse_alphabetically(users)
-    print("Reverse alphabetically sorted:", reverse_sorted_users)
-
-    shuffled_users = shuffle_randomly(users)
-    print("Shuffled data:", shuffled_users)
-
-    write_csv(output_file, sorted_users)
-    print(f"Sorted data written to {output_file}")
+    def filter_users_by_friends(self, user_id):
+        """Filter all user data to include only friends of the given user ID."""
+        friends = self.get_user_friends(user_id)
+        return sorted(friends, key=lambda user: user["username"])  # Alphabetical order of friends
