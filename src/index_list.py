@@ -11,6 +11,7 @@ Metodos:
 '''
 import csv
 import random
+import os
 
 class Index_List:
     def __init__(self, users_file, relations_file):
@@ -73,28 +74,29 @@ class Index_List:
 # Example usage
 if __name__ == "__main__":
     # Paths to datasets
-    users_csv = "../assets/data/users.csv"
-    relations_csv = "../assets/data/relations.csv"
+    users_csv = file_path = os.path.join(os.getcwd(), 'assets', 'data', 'users.csv')  # Absolute path
+    relations_csv = file_path = os.path.join(os.getcwd(), 'assets', 'data', 'relations.csv')  # Absolute path
+
 
     index_list = Index_List(users_csv, relations_csv)
 
     # Get all users
-    all_users = index_list.get_all_users()
-    print("All Users:", all_users)
+    #all_users = index_list.get_all_users()
+    #print("All Users:", all_users)
 
     # Get users sorted alphabetically
-    sorted_users = index_list.get_sorted_users()
-    print("Sorted Users:", sorted_users)
+    #sorted_users = index_list.get_sorted_users()
+    #print("Sorted Users:", sorted_users)
 
     # Get users in random order
-    random_users = index_list.get_random_users()
-    print("Random Users:", random_users)
+    #random_users = index_list.get_random_users()
+    #print("Random Users:", random_users)
 
     # Get friends of a specific user (example: user ID 4)
-    user_friends = index_list.get_user_friends(4)
+    user_friends = index_list.get_user_friends(6)
     print("Friends of User 4:", user_friends)
 
     # Filter users to only include friends of a specific user (example: user ID 4)
-    filtered_friends = index_list.filter_users_by_friends(4)
+    filtered_friends = index_list.filter_users_by_friends(6)
     print("Filtered Friends of User 4:", filtered_friends)
 
