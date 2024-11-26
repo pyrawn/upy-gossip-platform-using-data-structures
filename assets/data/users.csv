@@ -1,11 +1,11 @@
-id,username,password
-1,user1,password123
-2,user2,password456
-3,user3,password789
-4,pyrawn,angelonian
-5,this,mainfrank
-6,valeria,lorena22
-7,lorena,3012105@
-8,elprofe,sara21
-9,elisabeth,chicle123
-10,new_user,ABC
+id,username,password,description
+1,user1,password123,""
+2,user2,password456,""
+3,user3,password789,""
+4,pyrawn,angelonian,"Angelonians, taituwande"
+5,this,mainfrank,"Melodian, taituwande, ah!"
+6,valeria,lorena22,"#TeamUNACAR"
+7,lorena,3012105@,":p"
+8,elprofe,sara21,"Haciendo mi tesis..."
+9,elisabeth,chicle123,"Its yubarta"
+10,new_user,ABC,"LMAO"

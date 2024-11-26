@@ -1,13 +1,14 @@
 import tkinter as tk
 import csv
 import os
+import subprocess  # Added to execute external Python scripts
 try:
     from src.stack import Stack  # When running from the project root
 except ModuleNotFoundError:
     from .stack import Stack  # When running from within the `src` folder
     
-# Import notifications.py
 from src import notifications  # Adjust the path according to your project structure
+
 
 def load_users():
     """Loads users from users.csv and returns them as a dictionary."""
@@ -23,6 +24,20 @@ def load_users():
     except FileNotFoundError:
         print("Error: users.csv file not found.")
     return users
+
+
+def open_profile(user_id):
+    """Opens profile.py with the given user_id as a parameter."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    profile_script = os.path.join(script_dir, "profile.py")  # Path to profile.py
+
+    try:
+        subprocess.Popen(["python", profile_script, str(user_id)])  # Run profile.py with user_id
+    except FileNotFoundError:
+        print("Error: profile.py file not found.")
+    except Exception as e:
+        print(f"An error occurred while opening profile.py: {e}")
+
 
 def open_feed(user_id, user_name):
     # Create the feed window
@@ -41,7 +56,7 @@ def open_feed(user_id, user_name):
     notifications_button = tk.Button(nav_frame, text="Notifications", width=15, command=lambda: open_notifications(user_id))
     notifications_button.pack(side="left", padx=5)
 
-    profile_button = tk.Button(nav_frame, text="Profile", width=15)
+    profile_button = tk.Button(nav_frame, text="Profile", width=15, command=lambda: open_profile(user_id))
     profile_button.pack(side="left", padx=5)
 
     friend_requests_button = tk.Button(nav_frame, text="Friend Requests", width=20)
@@ -101,6 +116,7 @@ def open_feed(user_id, user_name):
 
     # Keep the feed window open until the user closes it
     feed_window.mainloop()
+
 
 # Function to open notifications
 def open_notifications(user_id):
