@@ -7,17 +7,22 @@ from . import signin  # Importa signin.py
 
 
 # Function to read users from the CSV file
+# Function to read users from the CSV file
 def read_users():
     users = {}
     file_path = os.path.join(os.getcwd(), 'assets', 'data', 'users.csv')  # Absolute path
 
     try:
         with open(file_path, mode='r', newline='', encoding='utf-8') as file:
-            reader = csv.reader(file)
+            reader = csv.reader(file, quotechar='"', skipinitialspace=True)  # Handle quoted values
             next(reader)  # Skip the header
             for row in reader:
-                user_id, username, password = row  # Adjusted for updated columns
-                users[username] = {"user_id": user_id, "password": password}
+                # Ensure the row has the correct number of columns
+                if len(row) == 4:
+                    user_id, username, password, description = row
+                    users[username] = {"user_id": user_id, "password": password}
+                else:
+                    messagebox.showerror("Error", f"Invalid row format: {row}")
     except FileNotFoundError:
         messagebox.showerror("Error", "The users file was not found.")
     except Exception as e:
