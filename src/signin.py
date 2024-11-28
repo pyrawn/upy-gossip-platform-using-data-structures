@@ -26,7 +26,7 @@ def save_user(username, password):
     try:
         with open(file_path, mode='a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
-            writer.writerow([user_id, username, password])
+            writer.writerow([user_id, username, password,''])
             messagebox.showinfo("Sign Up Successful", "You have been successfully registered!")
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred while saving the user: {e}")
