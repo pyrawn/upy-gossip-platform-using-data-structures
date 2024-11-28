@@ -46,7 +46,8 @@ def open_friends_window(user_id):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     friends_script = os.path.join(script_dir, "friends.py")
     try:
-        subprocess.Popen(["python", friends_script, str(user_id)])  # Run friends.py with user_id
+        # Execute friends.py with the user_id as an argument
+        subprocess.Popen(["python", friends_script, str(user_id)])  
     except FileNotFoundError:
         messagebox.showerror("Error", "friends.py file not found.")
     except Exception as e:
@@ -57,7 +58,7 @@ def profile_interface(root, user_id):
     user_data = load_user_data(user_id)
 
     if not user_data:
-        messagebox.showwarning("Warning", "Usuario no disponible")
+        messagebox.showwarning("Warning", "User not available")
         return
 
     # Main Frame
@@ -75,7 +76,13 @@ def profile_interface(root, user_id):
     description_label.pack(anchor="w", padx=10)
 
     # Button to open friends window
-    friends_button = tk.Button(user_info_frame, text="Check Friends", font=("Arial", 12), bg="lightgreen", command=lambda: open_friends_window(user_id))
+    friends_button = tk.Button(
+        user_info_frame,
+        text="Check Friends",
+        font=("Arial", 12),
+        bg="lightgreen",
+        command=lambda: open_friends_window(user_id)  # Open friends.py with user_id
+    )
     friends_button.pack(pady=10)
 
     # Posts Section
@@ -102,7 +109,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     try:
-        user_id = int(sys.argv[1])  # Convertir el argumento a entero
+        user_id = int(sys.argv[1])  # Convert user_id to an integer
     except ValueError:
         print("Error: User ID must be an integer.")
         sys.exit(1)
@@ -115,3 +122,4 @@ if __name__ == "__main__":
     profile_interface(root, user_id)
 
     root.mainloop()
+
