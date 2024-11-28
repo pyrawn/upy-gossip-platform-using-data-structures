@@ -1,12 +1,12 @@
 import tkinter as tk
 import csv
 import os
-import subprocess  # Added to execute external Python scripts
+import subprocess  # To execute external Python scripts
 try:
     from src.stack import Stack  # When running from the project root
 except ModuleNotFoundError:
     from .stack import Stack  # When running from within the `src` folder
-    
+
 from src import notifications  # Adjust the path according to your project structure
 
 
@@ -39,6 +39,32 @@ def open_profile(user_id):
         print(f"An error occurred while opening profile.py: {e}")
 
 
+def open_search(user_id):
+    """Opens search.py with the given user_id as a parameter."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    search_script = os.path.join(script_dir, "search.py")  # Path to search.py
+
+    try:
+        subprocess.Popen(["python", search_script, str(user_id)])  # Run search.py with user_id
+    except FileNotFoundError:
+        print("Error: search.py file not found.")
+    except Exception as e:
+        print(f"An error occurred while opening search.py: {e}")
+
+
+def open_friend_requests(user_id):
+    """Opens friendreq.py with the given user_id as a parameter."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    friendreq_script = os.path.join(script_dir, "friendreq.py")  # Path to friendreq.py
+
+    try:
+        subprocess.Popen(["python", friendreq_script, str(user_id)])  # Run friendreq.py with user_id
+    except FileNotFoundError:
+        print("Error: friendreq.py file not found.")
+    except Exception as e:
+        print(f"An error occurred while opening friendreq.py: {e}")
+
+
 def open_feed(user_id, user_name):
     # Create the feed window
     feed_window = tk.Tk()
@@ -59,8 +85,16 @@ def open_feed(user_id, user_name):
     profile_button = tk.Button(nav_frame, text="Profile", width=15, command=lambda: open_profile(user_id))
     profile_button.pack(side="left", padx=5)
 
-    friend_requests_button = tk.Button(nav_frame, text="Friend Requests", width=20)
+    friend_requests_button = tk.Button(
+        nav_frame,
+        text="Friend Requests",
+        width=20,
+        command=lambda: open_friend_requests(user_id)  # Open friendreq.py
+    )
     friend_requests_button.pack(side="left", padx=5)
+
+    search_button = tk.Button(nav_frame, text="Search Users", width=15, command=lambda: open_search(user_id))
+    search_button.pack(side="left", padx=5)
 
     # Frame for the feed content
     feed_frame = tk.Frame(feed_window)

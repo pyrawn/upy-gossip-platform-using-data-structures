@@ -33,11 +33,30 @@ def create_empty_notifications_file(user_id):
         with open(notifications_file, mode="w", newline="", encoding="utf-8") as file:
             fieldnames = ['id_notification', 'message', 'user_id', 'date']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
-
             writer.writeheader()  # Write headers
             print(f"Created empty notifications file: {notifications_file}")
     except Exception as e:
         print(f"Error creating notifications file: {e}")
+
+def add_notification(user_id, message):
+    """Add a new notification to the user's notification file."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    notifications_file = os.path.join(script_dir, f"../assets/data/notification_users/{user_id}_notifications.csv")
+
+    try:
+        with open(notifications_file, mode="a", newline="", encoding="utf-8") as file:
+            fieldnames = ['id_notification', 'message', 'user_id', 'date']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+            writer.writerow({
+                'id_notification': f"{user_id}-{os.urandom(4).hex()}",
+                'message': message,
+                'user_id': user_id,
+                'date': pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
+            })
+            print(f"Notification added for user {user_id}: {message}")
+    except Exception as e:
+        print(f"Error adding notification: {e}")
 
 def open_notifications(user_id):
     """Open the user's notifications window."""
@@ -110,3 +129,12 @@ def remove_notification(user_id, notif_id):
         print(f"Notification {notif_id} removed successfully.")
     except Exception as e:
         print(f"Error removing notification: {e}")
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) < 2:
+        print("Error: User ID not provided.")
+        sys.exit(1)
+
+    user_id = int(sys.argv[1])
+    open_notifications(user_id)
