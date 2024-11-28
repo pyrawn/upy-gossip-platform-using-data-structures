@@ -72,6 +72,7 @@ class Index_List:
         return sorted(friends, key=lambda user: user["username"])  # Alphabetical order of friends
 
 # Example usage
+'''
 if __name__ == "__main__":
     # Paths to datasets
     users_csv = file_path = os.path.join(os.getcwd(), 'assets', 'data', 'users.csv')  # Absolute path
@@ -100,3 +101,4 @@ if __name__ == "__main__":
     filtered_friends = index_list.filter_users_by_friends(6)
     print("Filtered Friends of User 4:", filtered_friends)
 
+'''
