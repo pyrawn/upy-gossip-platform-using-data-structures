@@ -29,7 +29,7 @@ def load_users():
 
 
 def load_posts_and_comments():
-    """Cargar publicaciones y comentarios en un CommentTree."""
+    """Carga publicaciones y comentarios en un CommentTree."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
     posts_file = os.path.join(script_dir, "../assets/data/posts.csv")
 
@@ -41,15 +41,20 @@ def load_posts_and_comments():
                 post_id = int(row["post_id"])
                 post_text = row["post_text"]
                 author_id = int(row["author_id"])
-                parent_id = int(row["parent_id"]) if "parent_id" in row and row["parent_id"] else None
+                # Validar parent_id: es None para publicaciones principales
+                parent_id = (
+                    int(float(row["parent_id"])) if row["parent_id"] and row["parent_id"].strip() else None
+                )
+                # Agregar el nodo al árbol de comentarios
                 comment_tree.add_node(post_id, {"text": post_text, "author_id": author_id}, parent_id)
     except FileNotFoundError:
         print("No posts file found.")
+    except ValueError as e:
+        print(f"Error parsing posts: {e}")
     return comment_tree
 
-
 def add_post(author_id, text, parent_id=None):
-    """Agregar un nuevo post o comentario al archivo posts.csv."""
+    """Agrega un nuevo post o comentario al archivo posts.csv."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
     posts_file = os.path.join(script_dir, "../assets/data/posts.csv")
 
@@ -64,7 +69,7 @@ def add_post(author_id, text, parent_id=None):
         "post_id": last_post_id + 1,
         "post_text": text,
         "author_id": author_id,
-        "parent_id": parent_id or "",
+        "parent_id": str(parent_id) if parent_id is not None else "",
         "date": "2024-11-26"  # Reemplaza con la fecha actual si es necesario
     }
 

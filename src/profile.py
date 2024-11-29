@@ -41,12 +41,39 @@ def load_user_posts(user_id):
         return Stack()
 
 
+def delete_post(post_id, user_id, root):
+    """Delete a post by its ID."""
+    file_path = os.path.join(os.getcwd(), 'assets', 'data', 'posts.csv')
+    try:
+        posts = pd.read_csv(file_path)
+        posts = posts[posts['post_id'] != post_id]  # Remove the post with the given ID
+        posts.to_csv(file_path, index=False)  # Save the updated posts
+        messagebox.showinfo("Success", "Post deleted successfully!")
+        root.destroy()  # Close the current window
+        profile_interface(tk.Tk(), user_id)  # Reload the profile interface
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to delete post: {e}")
+
+
+def update_description(user_id, new_description, root):
+    """Update the user's description."""
+    file_path = os.path.join(os.getcwd(), 'assets', 'data', 'users.csv')
+    try:
+        users = pd.read_csv(file_path)
+        users.loc[users['id'] == user_id, 'description'] = new_description
+        users.to_csv(file_path, index=False)  # Save the updated users
+        messagebox.showinfo("Success", "Description updated successfully!")
+        root.destroy()  # Close the current window
+        profile_interface(tk.Tk(), user_id)  # Reload the profile interface
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to update description: {e}")
+
+
 def open_friends_window(user_id):
     """Opens the friends.py window with the user_id."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
     friends_script = os.path.join(script_dir, "friends.py")
     try:
-        # Execute friends.py with the user_id as an argument
         subprocess.Popen(["python", friends_script, str(user_id)])  
     except FileNotFoundError:
         messagebox.showerror("Error", "friends.py file not found.")
@@ -75,6 +102,16 @@ def profile_interface(root, user_id):
     description_label = tk.Label(user_info_frame, text=f"Description: {user_data['description']}", font=("Arial", 12), bg="lightblue")
     description_label.pack(anchor="w", padx=10)
 
+    # Button to update description
+    update_desc_button = tk.Button(
+        user_info_frame,
+        text="Update Description",
+        font=("Arial", 12),
+        bg="lightblue",
+        command=lambda: open_update_description_window(user_id, root)
+    )
+    update_desc_button.pack(pady=5)
+
     # Button to open friends window
     friends_button = tk.Button(
         user_info_frame,
@@ -102,6 +139,36 @@ def profile_interface(root, user_id):
         post_text = tk.Label(post_frame, text=f"{post['post_text']} (Date: {post['date']})", font=("Arial", 12), bg="lightgray")
         post_text.pack(anchor="w")
 
+        delete_button = tk.Button(
+            post_frame,
+            text="Delete Post",
+            font=("Arial", 10),
+            bg="red",
+            command=lambda post_id=post['post_id']: delete_post(post_id, user_id, root)
+        )
+        delete_button.pack(anchor="e", pady=5)
+
+
+def open_update_description_window(user_id, root):
+    """Open a window to update the user's description."""
+    update_window = tk.Tk()
+    update_window.title("Update Description")
+
+    label = tk.Label(update_window, text="Enter new description:", font=("Arial", 12))
+    label.pack(pady=10)
+
+    text_area = tk.Text(update_window, height=5, width=40)
+    text_area.pack(pady=10)
+
+    submit_button = tk.Button(
+        update_window,
+        text="Submit",
+        command=lambda: update_description(user_id, text_area.get("1.0", tk.END).strip(), root)
+    )
+    submit_button.pack(pady=10)
+
+    update_window.mainloop()
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -122,4 +189,3 @@ if __name__ == "__main__":
     profile_interface(root, user_id)
 
     root.mainloop()
-
