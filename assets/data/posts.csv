@@ -1,3 +1,10 @@
-post_id,post_text,author_id,date
-1,"Angelo best brawler",4,2024-11-20
-2,"t amo juan carlos uwu",5,2024-11-20
+post_id,post_text,author_id,parent_id,date
+1,"Angelo best brawler",4,,2024-11-20
+2,"t amo juan carlos uwu",5,,2024-11-20
+3,"Totally agree!",6,1,2024-11-21
+4,"Haha, nice one!",7,3,2024-11-22
+5,A veces pienso que estructuras de datos es la mejor materia.,4,,2024-11-26
+6,Holaaa,4,,2024-11-26
+7,Lol,4,,2024-11-26
+8,Se sabe,4,2,2024-11-26
+9,Tipico de main edgar,4,2,2024-11-26
